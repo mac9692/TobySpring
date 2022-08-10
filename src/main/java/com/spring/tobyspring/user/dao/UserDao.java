@@ -5,10 +5,14 @@ import com.spring.tobyspring.user.domain.User;
 import java.sql.*;
 
 public class UserDao {
+    private ConnectionMaker connectionMaker;
+
+    public UserDao() {
+        connectionMaker = new SimpleConnectionMaker();
+    }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        Connection c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/parkjinseong");
+        Connection c = connectionMaker.makeConnection();
 
         PreparedStatement ps = c.prepareStatement(
                 "insert into users(id, name, password) values (?,?,?)");
@@ -23,8 +27,7 @@ public class UserDao {
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        Connection c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/parkjinseong");
+        Connection c = connectionMaker.makeConnection();
 
         PreparedStatement ps = c.prepareStatement(
                 "select * from users where id = ?");
@@ -48,7 +51,7 @@ public class UserDao {
         UserDao dao = new UserDao();
 
         User user = new User();
-        user.setId("white");
+        user.setId("white4");
         user.setName("박진성");
         user.setPassword("1234");
 
