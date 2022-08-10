@@ -2,13 +2,16 @@ package com.spring.tobyspring.user.dao;
 
 import com.spring.tobyspring.user.domain.User;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UserDao {
-    private ConnectionMaker connectionMaker;
+    private final ConnectionMaker connectionMaker;
 
-    public UserDao() {
-        connectionMaker = new SimpleConnectionMaker();
+    public UserDao(ConnectionMaker connectionMaker) {
+        this.connectionMaker = connectionMaker;
     }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
@@ -45,24 +48,5 @@ public class UserDao {
         c.close();
 
         return user;
-    }
-
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        UserDao dao = new UserDao();
-
-        User user = new User();
-        user.setId("white4");
-        user.setName("박진성");
-        user.setPassword("1234");
-
-        dao.add(user);
-
-        System.out.println(user.getId() + "등록 성공");
-
-        User user2 = dao.get(user.getId());
-        System.out.println(user2.getName());
-        System.out.println(user2.getPassword());
-
-        System.out.println(user2.getId() + "조회 성공");
     }
 }
