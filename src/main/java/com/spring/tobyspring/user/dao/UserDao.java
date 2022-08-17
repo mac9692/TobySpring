@@ -2,6 +2,7 @@ package com.spring.tobyspring.user.dao;
 
 import com.spring.tobyspring.user.domain.User;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,16 +10,13 @@ import java.sql.SQLException;
 
 public class UserDao {
     private final ConnectionMaker connectionMaker;
-    private Connection c;
-    private User user;
-
 
     public UserDao(ConnectionMaker connectionMaker) {
         this.connectionMaker = connectionMaker;
     }
 
-    public void add(User user) throws ClassNotFoundException, SQLException {
-        this.c = connectionMaker.makeConnection();
+    public void add(User user) throws SQLException, ClassNotFoundException {
+        Connection c = connectionMaker.makeConnection();
 
         PreparedStatement ps = c.prepareStatement(
                 "insert into users(id, name, password) values (?,?,?)");
@@ -32,8 +30,8 @@ public class UserDao {
         c.close();
     }
 
-    public User get(String id) throws ClassNotFoundException, SQLException {
-        this.c = connectionMaker.makeConnection();
+    public User get(String id) throws SQLException, ClassNotFoundException {
+        Connection c = connectionMaker.makeConnection();
 
         PreparedStatement ps = c.prepareStatement(
                 "select * from users where id = ?");
@@ -41,15 +39,15 @@ public class UserDao {
 
         ResultSet rs = ps.executeQuery();
         rs.next();
-        this.user = new User();
-        this.user.setId(rs.getString("id"));
-        this.user.setName(rs.getString("name"));
-        this.user.setPassword(rs.getString("password"));
+        User user = new User();
+        user.setId(rs.getString("id"));
+        user.setName(rs.getString("name"));
+        user.setPassword(rs.getString("password"));
 
         rs.close();
         ps.close();
         c.close();
 
-        return this.user;
+        return user;
     }
 }

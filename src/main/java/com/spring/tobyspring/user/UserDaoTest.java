@@ -1,5 +1,7 @@
 package com.spring.tobyspring.user;
 
+import com.spring.tobyspring.user.dao.ConnectionMaker;
+import com.spring.tobyspring.user.dao.CountingConnectionMaker;
 import com.spring.tobyspring.user.dao.DaoFactory;
 import com.spring.tobyspring.user.dao.UserDao;
 import com.spring.tobyspring.user.domain.User;
@@ -12,9 +14,8 @@ public class UserDaoTest {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
         UserDao dao = context.getBean("userDao", UserDao.class);
-
         User user = new User();
-        user.setId("white7");
+        user.setId("white9");
         user.setName("박진성");
         user.setPassword("1234");
 
